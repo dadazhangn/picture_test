@@ -35,17 +35,32 @@ def nn_model(x_train, y_train, x_test, y_test):
     # 为模型配置优化方法
     model.compile(optimizer="adam", loss="sparse_categorical_crossentropy",  # 交叉熵代价函数
                   metrics="sparse_categorical_accuracy")
+
+
+    cp_callback = save_model(model)
     # 训练模型
     model.fit(x_train, y_train,
               batch_size=32,
               epochs=10,  # 迭代次数
               validation_data=(x_test, y_test),
-              validation_freq=1
+              validation_freq=1,
+              callbacks=[cp_callback]
               )
     # 模型评估
     loss, acc = model.evaluate(x_test, y_test)
     print("loss: ", loss)
     print("acc: ", acc)
+    # 获取计算过程
+    model.summary()
+
+
+# 模型保存
+def save_model(model):
+
+
+
+
+
 
 
 if __name__ == "__main__":
